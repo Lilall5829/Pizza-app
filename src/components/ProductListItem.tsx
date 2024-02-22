@@ -1,11 +1,21 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 //@ represent the root directory: FoodOrdering
-import Colors from "@/src/constants/Colors";
+import Colors from "@constants/Colors";
+import { Product } from "@/types";
 
-const ProductListItem = ({ product }) => {
+type ProductListItemProps = {
+  product: Product;
+};
+export const defaultPizzaImage =
+  "https://p16-flow-sign-va.ciciai.com/ocean-cloud-tos-us/ed68cf0e763e4993bc8efa195cf0f133.png~tplv-6bxrjdptv7-image.png?rk3s=18ea6f23&x-expires=1739939558&x-signature=%2B9rFwlDL26cRNwOclICZQ823%2BNU%3D";
+
+const ProductListItem = ({ product }: ProductListItemProps) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: product.image }} style={styles.image} />
+      <Image
+        source={{ uri: product.image || defaultPizzaImage }}
+        style={styles.image}
+      />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>${product.price}</Text>
     </View>
