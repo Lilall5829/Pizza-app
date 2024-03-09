@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 //@ represent the root directory: FoodOrdering
 import Colors from "@constants/Colors";
 import { Product } from "@/types";
-import { Link } from "expo-router";
+import { Link, useSegments } from "expo-router";
 
 type ProductListItemProps = {
   product: Product;
@@ -11,9 +11,11 @@ export const defaultPizzaImage =
   "https://p16-flow-sign-va.ciciai.com/ocean-cloud-tos-us/ed68cf0e763e4993bc8efa195cf0f133.png~tplv-6bxrjdptv7-image.png?rk3s=18ea6f23&x-expires=1739939558&x-signature=%2B9rFwlDL26cRNwOclICZQ823%2BNU%3D";
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
+  const segments = useSegments();
   return (
     // (tab): round bracket means this folder can be ingored in the path!
-    <Link href={`/menu/${product.id}`} asChild>
+
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image
           source={{ uri: product.image || defaultPizzaImage }}
