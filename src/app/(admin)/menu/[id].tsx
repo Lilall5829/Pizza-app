@@ -19,13 +19,13 @@ const ProductDetailsScreen = () => {
 
   const product = products.find((p) => p.id.toString() == id);
 
-  const addToCart = () => {
-    if (!product) {
-      return;
-    }
-    addItem(product, selectedSize);
-    router.push("/cart");
-  };
+  // const addToCart = () => {
+  //   if (!product) {
+  //     return;
+  //   }
+  //   addItem(product, selectedSize);
+  //   router.push("/cart");
+  // };
 
   if (!product) {
     return <Text>Product not found</Text>;

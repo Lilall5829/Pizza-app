@@ -13,8 +13,6 @@ export const defaultPizzaImage =
 const ProductListItem = ({ product }: ProductListItemProps) => {
   const segments = useSegments();
   return (
-    // (tab): round bracket means this folder can be ingored in the path!
-
     <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image
