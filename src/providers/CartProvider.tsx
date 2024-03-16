@@ -6,14 +6,16 @@ type CartType = {
   items: CartItem[];
   addItem: (product: Product, size: CartItem["size"]) => void;
   updateQuantity: (itemId: string, amount: -1 | 1) => void;
-  total: number;
+  // total: number;
+  totalRounded: number;
 };
 
 export const CartContext = createContext<CartType>({
   items: [],
   addItem: () => {},
   updateQuantity: () => {},
-  total: 0,
+  // total: 0,
+  totalRounded: 0,
 });
 
 const CartProvider = ({ children }: PropsWithChildren) => {
@@ -58,8 +60,11 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     (sum, item) => (sum += item.product.price * item.quantity),
     0
   );
+  const totalRounded = Number(total.toFixed(3));
   return (
-    <CartContext.Provider value={{ items, addItem, updateQuantity, total }}>
+    <CartContext.Provider
+      value={{ items, addItem, updateQuantity, totalRounded }}
+    >
       {children}
     </CartContext.Provider>
   );
