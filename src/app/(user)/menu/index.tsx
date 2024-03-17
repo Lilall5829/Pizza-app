@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View, Image } from "react-native";
 //@ represent the root directory: FoodOrdering
 import { FlatList } from "react-native";
 import products from "@assets/data/products";
