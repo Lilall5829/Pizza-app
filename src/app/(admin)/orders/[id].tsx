@@ -1,18 +1,22 @@
-import { Text, View, FlatList, StyleSheet } from "react-native";
+import { Text, View, FlatList, StyleSheet, Pressable } from "react-native";
+import { useState } from "react";
+
 import { Stack, useLocalSearchParams } from "expo-router";
+import { OrderStatusList, OrderStatus } from "@/types";
 import orders from "@assets/data/orders";
+import Colors from "@constants/Colors";
 import OrderListItem from "@components/OrderListItem";
 import OrderItemListItem from "@components/OrderItemListItem";
-
-// shortcut of create a component: rnfe
 
 const OrderDetailsScreen = () => {
   const { id } = useLocalSearchParams();
 
   const order = orders.find((p) => p.id.toString() == id);
+
   if (!order) {
     return <Text>Order not found</Text>;
   }
+  const [selectedStatus, setSelectedStatus] = useState(order.status);
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: `Order # ${order?.id.toString()}` }} />
@@ -26,6 +30,42 @@ const OrderDetailsScreen = () => {
         //ListHeaderComponent fix the header when scrolling screen
         ListHeaderComponent={() => (
           <OrderListItem order={order}></OrderListItem>
+        )}
+        ListFooterComponent={() => (
+          <View>
+            <Text style={{ fontWeight: "bold" }}>Status</Text>
+            <View style={{ flexDirection: "row", gap: 5 }}>
+              {OrderStatusList.map((status) => (
+                <Pressable
+                  onPress={() => {
+                    console.warn("Update status");
+                    setSelectedStatus(status);
+                  }}
+                  key={status}
+                  style={{
+                    borderColor: Colors.light.tint,
+                    borderWidth: 1,
+                    padding: 10,
+                    borderRadius: 5,
+                    marginVertical: 10,
+                    backgroundColor:
+                      selectedStatus === status
+                        ? Colors.light.tint
+                        : "transparent",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color:
+                        selectedStatus === status ? "white" : Colors.light.tint,
+                    }}
+                  >
+                    {status}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
         )}
       />
     </View>
