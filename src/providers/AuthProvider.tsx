@@ -48,7 +48,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       setSession(session);
     });
   }, []);
-  console.log(profile);
+  // console.log(profile);
 
   return (
     <AuthContext.Provider
