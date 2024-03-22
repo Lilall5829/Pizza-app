@@ -2,9 +2,10 @@ import { View, Text, Image, StyleSheet, TextInput, Alert } from "react-native";
 import React, { useState } from "react";
 import Button from "@/components/Button";
 import { defaultPizzaImage } from "@/components/ProductListItem";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
+import { useInsertProduct, useProduct, useUpdateProduct } from "@/api/products";
 
 const CreateProductScreen = () => {
   const [name, setName] = useState("");
@@ -12,8 +13,15 @@ const CreateProductScreen = () => {
   const [errors, setErrors] = useState("");
   const [image, setImage] = useState<string | null>(null);
 
-  const { id } = useLocalSearchParams();
-  const isUpdating = !!id;
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString == "string" ? idString : idString[0]);
+  const isUpdating = !!idString;
+
+  const { mutate: insertProduct } = useInsertProduct();
+  const { mutate: updateProduct } = useUpdateProduct();
+  const { data: updatingProduct } = useProduct(id);
+
+  const router = useRouter();
 
   const resetFields = () => {
     setName("");
@@ -50,7 +58,15 @@ const CreateProductScreen = () => {
 
     console.warn("Creating product:", name);
     // Save in the database
-    resetFields();
+    insertProduct(
+      { name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFields();
+          router.back();
+        },
+      }
+    );
   };
 
   const onUpdateCreate = () => {
@@ -60,6 +76,16 @@ const CreateProductScreen = () => {
 
     console.warn("Updating product:", name);
     // Save in the database
+    updateProduct(
+      { id, name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFields();
+          router.back();
+        },
+      }
+    );
+
     resetFields();
   };
   const pickImage = async () => {
