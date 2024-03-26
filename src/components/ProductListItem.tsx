@@ -7,9 +7,9 @@ import { Link, useSegments } from "expo-router";
 type ProductListItemProps = {
   product: Tables<"products">;
 };
+// export const defaultPizzaImage = "https://p16-flow-sign-va.ciciai.com/ocean-cloud-tos-us/ed68cf0e763e4993bc8efa195cf0f133.png~tplv-6bxrjdptv7-image.png?rk3s=18ea6f23&x-expires=1739939558&x-signature=%2B9rFwlDL26cRNwOclICZQ823%2BNU%3D";
 export const defaultPizzaImage =
-  "https://p16-flow-sign-va.ciciai.com/ocean-cloud-tos-us/ed68cf0e763e4993bc8efa195cf0f133.png~tplv-6bxrjdptv7-image.png?rk3s=18ea6f23&x-expires=1739939558&x-signature=%2B9rFwlDL26cRNwOclICZQ823%2BNU%3D";
-
+  "https://p16-flow-sign-va.ciciai.com/ocean-cloud-tos-us/e07c014119634c93be31ff19afbc4149.png~tplv-6bxrjdptv7-image.png?rk3s=18ea6f23&x-expires=1742920030&x-signature=rO03rYWUGHlGKyVnD2SsaNj0Bvk%3D";
 const ProductListItem = ({ product }: ProductListItemProps) => {
   const segments = useSegments();
 

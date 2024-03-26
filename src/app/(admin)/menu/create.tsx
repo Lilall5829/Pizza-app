@@ -35,7 +35,7 @@ const CreateProductScreen = () => {
       setImage(updatingProduct.image);
     }
   }, [updatingProduct]);
-  console.log(updatingProduct.price);
+  console.log(updatingProduct?.price);
 
   const resetFields = () => {
     setName("");
