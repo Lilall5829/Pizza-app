@@ -1,35 +1,30 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
-import { OrderItem } from "../types";
-import { Link } from "expo-router";
-import { FontAwesome } from "@expo/vector-icons";
-import { useCart } from "../providers/CartProvider";
+import { OrderItem, Tables } from "../types";
 import { defaultPizzaImage } from "./ProductListItem";
 
 type OrderListItemProps = {
-  orderItem: OrderItem;
+  item: { products: Tables<"products"> } & Tables<"order_items">;
 };
 
-const OrderItemListItem = ({ orderItem }: OrderListItemProps) => {
+const OrderItemListItem = ({ item }: OrderListItemProps) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: orderItem.products.image || defaultPizzaImage }}
+        source={{ uri: item.products.image || defaultPizzaImage }}
         style={styles.image}
         resizeMode="contain"
       />
       <View style={{ flex: 1 }}>
-        <Text style={styles.title}>{orderItem.products.name}</Text>
+        <Text style={styles.title}>{item.products.name}</Text>
         <View style={styles.subtitleContainer}>
-          <Text style={styles.price}>
-            ${orderItem.products.price.toFixed(2)}
-          </Text>
-          <Text>Size: {orderItem.size}</Text>
+          <Text style={styles.price}>${item.products.price.toFixed(2)}</Text>
+          <Text>Size: {item.size}</Text>
         </View>
       </View>
       <View style={styles.quantitySelector}>
-        <Text style={styles.quantity}>{orderItem.quantity}</Text>
+        <Text style={styles.quantity}>{item.quantity}</Text>
       </View>
     </View>
   );

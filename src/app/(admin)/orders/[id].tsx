@@ -12,19 +12,24 @@ import { OrderStatusList, OrderStatus } from "@/types";
 import Colors from "@constants/Colors";
 import OrderListItem from "@components/OrderListItem";
 import OrderItemListItem from "@components/OrderItemListItem";
-import { useOrderDetails } from "@/api/orders";
+import { useOrderDetails, useUpdateOrder } from "@/api/orders";
 
 const OrderDetailsScreen = () => {
   const { id: idString } = useLocalSearchParams();
   const id = parseFloat(typeof idString == "string" ? idString : idString[0]);
 
   const { data: order, isLoading, error } = useOrderDetails(id);
+  const { mutate: updateOrder } = useUpdateOrder();
   const [selectedStatus, setSelectedStatus] = useState(order?.status);
+
+  const updateStatus = (status: string) => {
+    updateOrder({ id: id, updateFields: { status } });
+  };
 
   if (isLoading) {
     return <ActivityIndicator />;
   }
-  if (error) {
+  if (error || !order) {
     return <Text>Failed to fetch products</Text>;
   }
 
@@ -35,7 +40,7 @@ const OrderDetailsScreen = () => {
       <FlatList
         data={order.order_items}
         renderItem={({ item }) => (
-          <OrderItemListItem orderItem={item}></OrderItemListItem>
+          <OrderItemListItem item={item}></OrderItemListItem>
         )}
         contentContainerStyle={{ gap: 5, padding: 5 }}
         //ListHeaderComponent fix the header when scrolling screen
@@ -51,6 +56,7 @@ const OrderDetailsScreen = () => {
                   onPress={() => {
                     console.warn("Update status");
                     setSelectedStatus(status);
+                    updateStatus(status);
                   }}
                   key={status}
                   style={{

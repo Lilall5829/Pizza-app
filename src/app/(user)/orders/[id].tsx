@@ -21,7 +21,7 @@ const OrderDetailsScreen = () => {
   if (isLoading) {
     return <ActivityIndicator />;
   }
-  if (error) {
+  if (error || !order) {
     return <Text>Failed to fetch products</Text>;
   }
   return (
@@ -30,7 +30,7 @@ const OrderDetailsScreen = () => {
 
       <FlatList
         data={order.order_items}
-        renderItem={({ item }) => <OrderItemListItem orderItem={item} />}
+        renderItem={({ item }) => <OrderItemListItem item={item} />}
         contentContainerStyle={{ gap: 5, padding: 5 }}
         //ListHeaderComponent fix the header when scrolling screen
         ListHeaderComponent={() => (
