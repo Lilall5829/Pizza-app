@@ -9,7 +9,6 @@ import {
 import { useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { OrderStatusList, OrderStatus } from "@/types";
-import orders from "@assets/data/orders";
 import Colors from "@constants/Colors";
 import OrderListItem from "@components/OrderListItem";
 import OrderItemListItem from "@components/OrderItemListItem";
@@ -20,6 +19,7 @@ const OrderDetailsScreen = () => {
   const id = parseFloat(typeof idString == "string" ? idString : idString[0]);
 
   const { data: order, isLoading, error } = useOrderDetails(id);
+  const [selectedStatus, setSelectedStatus] = useState(order?.status);
 
   if (isLoading) {
     return <ActivityIndicator />;
@@ -28,7 +28,6 @@ const OrderDetailsScreen = () => {
     return <Text>Failed to fetch products</Text>;
   }
 
-  const [selectedStatus, setSelectedStatus] = useState(order.status);
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: `Order # ${id}` }} />

@@ -29,10 +29,8 @@ const OrderDetailsScreen = () => {
       <Stack.Screen options={{ title: `Order # ${id}` }} />
 
       <FlatList
-        data={order?.order_items}
-        renderItem={({ item }) => (
-          <OrderItemListItem orderItem={item}></OrderItemListItem>
-        )}
+        data={order.order_items}
+        renderItem={({ item }) => <OrderItemListItem orderItem={item} />}
         contentContainerStyle={{ gap: 5, padding: 5 }}
         //ListHeaderComponent fix the header when scrolling screen
         ListHeaderComponent={() => (

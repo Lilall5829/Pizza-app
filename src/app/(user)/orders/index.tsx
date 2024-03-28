@@ -6,9 +6,9 @@ import { useMyOrderList } from "@/api/orders";
 export default function OrderScreen() {
   const { data: orders, isLoading, error } = useMyOrderList();
 
-  if (!orders) {
-    return <Text>Product not found</Text>;
-  }
+  // if (!orders) {
+  //   return <Text>Product not found</Text>;
+  // }
   if (isLoading) {
     return <ActivityIndicator />;
   }
