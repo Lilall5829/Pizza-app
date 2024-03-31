@@ -9,6 +9,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import OrderListItem from "@components/OrderListItem";
 import OrderItemListItem from "@components/OrderItemListItem";
 import { useOrderDetails } from "@/api/orders";
+import { useUpdateOrderSubscription } from "@/api/orders/subscriptions";
 
 // shortcut of create a component: rnfe
 
@@ -17,6 +18,7 @@ const OrderDetailsScreen = () => {
   const id = parseFloat(typeof idString == "string" ? idString : idString[0]);
 
   const { data: order, isLoading, error } = useOrderDetails(id);
+  useUpdateOrderSubscription(id);
 
   if (isLoading) {
     return <ActivityIndicator />;

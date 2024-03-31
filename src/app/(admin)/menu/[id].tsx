@@ -14,6 +14,7 @@ import { PizzaSize } from "@/types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import { useProduct } from "@/api/products";
+import RemoteImage from "@/components/RemoteImage";
 
 // shortcut of create a component: rnfe
 
@@ -25,19 +26,6 @@ const ProductDetailsScreen = () => {
 
   const id = parseFloat(typeof idString == "string" ? idString : idString[0]);
   const { data: product, error, isLoading } = useProduct(id);
-  const [selectedSize, setSelectedSize] = useState<PizzaSize>("M");
-  const { addItem } = useCart();
-  const router = useRouter();
-
-  // const product = products.find((p) => p.id.toString() == id);
-
-  // const addToCart = () => {
-  //   if (!product) {
-  //     return;
-  //   }
-  //   addItem(product, selectedSize);
-  //   router.push("/cart");
-  // };
 
   if (!product) {
     return <Text>Product not found</Text>;
@@ -71,8 +59,9 @@ const ProductDetailsScreen = () => {
       />
 
       <Stack.Screen options={{ title: product?.name }} />
-      <Image
-        source={{ uri: product.image || defaultPizzaImage }}
+      <RemoteImage
+        path={product?.image}
+        fallback={defaultPizzaImage}
         style={styles.image}
       />
 
