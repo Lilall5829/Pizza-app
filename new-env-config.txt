@@ -1,0 +1,10 @@
+# 将你的 .env 文件更新为以下内容：
+
+# 新的 Supabase 项目配置
+# 替换为你实际的项目信息
+EXPO_PUBLIC_SUPABASE_URL=https://你的新项目ID.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON=你的新anon_public密钥
+
+# Stripe 配置（保持不变）
+EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51P7JPaP8kqU6cZlPtVSZYqBltWgb07wvR04cwN9pcLo3Co3Sxr5jzJv25fzfGUJKtVj9QN02RW44EUHiqU0QeToY004hJbPkvw
+STRIPE_SECRET_KEY=sk_test_51P7JPaP8kqU6cZlPpJA8xie9QGmP8EipfCC4eZh4KoBoyTxE7LYPMiEeVFR3vyQ41VRPAVV0yXmlx9XiqCYeuRs3008RKr9UUE 

@@ -1,75 +1,42 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
-import Colors from "../constants/Colors";
-import { OrderItem, Tables } from "../types";
+import { OrderItem, Product } from "../types";
 import { defaultPizzaImage } from "./ProductListItem";
 import RemoteImage from "./RemoteImage";
 
-type OrderListItemProps = {
-  item: { products: Tables<"products"> } & Tables<"order_items">;
+type OrderItemListItemProps = {
+  item: OrderItem & { products: Product };
 };
 
-const OrderItemListItem = ({ item }: OrderListItemProps) => {
+const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
   return (
-    <View style={styles.container}>
-      <RemoteImage
-        path={item.products.image}
-        fallback={defaultPizzaImage}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <View style={{ flex: 1 }}>
-        <Text style={styles.title}>{item.products.name}</Text>
-        <View style={styles.subtitleContainer}>
-          <Text style={styles.price}>${item.products.price.toFixed(2)}</Text>
-          <Text>Size: {item.size}</Text>
-        </View>
-      </View>
-      <View style={styles.quantitySelector}>
-        <Text style={styles.quantity}>{item.quantity}</Text>
-      </View>
-    </View>
+    <div className="bg-white rounded-lg p-4 flex items-center gap-4 shadow-sm">
+      <div className="w-16 h-16 relative flex-shrink-0">
+        <RemoteImage
+          path={item.products.image}
+          fallback={defaultPizzaImage}
+          alt={item.products.name}
+          fill
+          className="object-contain"
+        />
+      </div>
+
+      <div className="flex-1">
+        <h3 className="font-medium text-gray-900 mb-1">{item.products.name}</h3>
+        <div className="flex items-center gap-4 text-sm text-gray-600">
+          <span className="font-bold text-primary-500">
+            ${item.products.price.toFixed(2)}
+          </span>
+          <span>Size: {item.size}</span>
+        </div>
+      </div>
+
+      <div className="text-right">
+        <span className="font-medium text-lg text-gray-900">
+          Qty: {item.quantity}
+        </span>
+      </div>
+    </div>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 5,
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  image: {
-    width: 75,
-    aspectRatio: 1,
-    alignSelf: "center",
-    marginRight: 10,
-  },
-  title: {
-    fontWeight: "500",
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  subtitleContainer: {
-    flexDirection: "row",
-    gap: 5,
-  },
-  quantitySelector: {
-    flexDirection: "row",
-    gap: 10,
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  quantity: {
-    fontWeight: "500",
-    fontSize: 18,
-  },
-  price: {
-    color: Colors.light.tint,
-    fontWeight: "bold",
-  },
-});
 
 export default OrderItemListItem;

@@ -1,34 +1,59 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import Colors from "../constants/Colors";
-import { forwardRef } from "react";
+import { ButtonHTMLAttributes, forwardRef } from "react";
+import { cn } from "../lib/utils";
 
-type ButtonProps = {
-  text: string;
-} & React.ComponentPropsWithoutRef<typeof Pressable>;
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  text?: string;
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
+  children?: React.ReactNode;
+}
 
-const Button = forwardRef<View | null, ButtonProps>(
-  ({ text, ...pressableProps }, ref) => {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      text,
+      children,
+      className,
+      variant = "primary",
+      size = "md",
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
+    const baseStyles =
+      "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-full";
+
+    const variants = {
+      primary:
+        "bg-primary-500 text-white hover:bg-primary-600 focus-visible:ring-primary-500",
+      secondary:
+        "bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-500",
+      outline:
+        "border border-gray-300 bg-transparent hover:bg-gray-50 focus-visible:ring-gray-500",
+      ghost:
+        "hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-gray-500",
+    };
+
+    const sizes = {
+      sm: "h-8 px-3 text-sm",
+      md: "h-10 px-4 py-2",
+      lg: "h-12 px-8 text-lg",
+    };
+
     return (
-      <Pressable ref={ref} {...pressableProps} style={styles.container}>
-        <Text style={styles.text}>{text}</Text>
-      </Pressable>
+      <button
+        className={cn(baseStyles, variants[variant], sizes[size], className)}
+        ref={ref}
+        disabled={disabled}
+        {...props}
+      >
+        {children || text}
+      </button>
     );
   }
 );
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.light.tint,
-    padding: 15,
-    alignItems: "center",
-    borderRadius: 100,
-    marginVertical: 10,
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
-  },
-});
+Button.displayName = "Button";
 
 export default Button;

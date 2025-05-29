@@ -1,47 +1,65 @@
-import {supabase} from './supabase';
-import {Alert} from 'react-native';
-import {initPaymentSheet, presentPaymentSheet} from '@stripe/stripe-react-native';
-import { FunctionsHttpError, FunctionsRelayError, FunctionsFetchError } from '@supabase/supabase-js'
+import { loadStripe } from '@stripe/stripe-js';
+import { supabase } from './supabase';
 
-const fetchPaymentSheetParams = async(amount:number)=>{
-    const {data, error} = await supabase.functions.invoke('payment-sheet', {body:{amount},});
-    if (error instanceof FunctionsHttpError) {
-        const errorMessage = await error.context.json()
-        console.log('Function returned an error', errorMessage)
-      } else if (error instanceof FunctionsRelayError) {
-        console.log('Relay error:', error.message)
-      } else if (error instanceof FunctionsFetchError) {
-        console.log('Fetch error:', error.message)
-      }
-    if(data){
-        return data;
+// Initialize Stripe
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+
+export const fetchPaymentSheetParams = async (amount: number) => {
+  try {
+    const { data, error } = await supabase.functions.invoke('payment-sheet', {
+      body: { amount },
+    });
+
+    if (error) {
+      console.error('Error fetching payment sheet params:', error);
+      throw new Error('Failed to fetch payment sheet parameters');
     }
-    Alert.alert('Error fetching payment sheet');
-    return {};
+
+    return data;
+  } catch (error) {
+    console.error('Error in fetchPaymentSheetParams:', error);
+    throw error;
+  }
 };
 
-export const initialisePaymentSheet = async (amount:number) => {
-    console.log('Init payment sheet, for', amount);
-    const { paymentIntent, publishableKey, customer, ephemeralKey } = await fetchPaymentSheetParams(amount);
-    console.log(paymentIntent, publishableKey);
+export const processPayment = async (amount: number) => {
+  try {
+    const stripe = await stripePromise;
+    if (!stripe) {
+      throw new Error('Stripe failed to load');
+    }
+
+    // For now, we'll just simulate a successful payment
+    // In a real implementation, you would:
+    // 1. Create a payment intent on your backend
+    // 2. Use stripe.confirmPayment() to process the payment
+    // 3. Handle the result
+
+    console.log('Processing payment for amount:', amount);
     
-    if (!paymentIntent || !publishableKey) return;
-    const result = await initPaymentSheet({
-        merchantDisplayName:"Pizza.dev",
-        paymentIntentClientSecret:paymentIntent,
-        customerId: customer,
-        customerEphemeralKeySecret: ephemeralKey,
-        defaultBillingDetails:{
-            name:"Lila",
-        },
-    })
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Simulate successful payment
+    return { success: true };
+  } catch (error) {
+    console.error('Payment processing error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Payment failed' };
+  }
 };
 
-export const openPaymentSheet = async () =>{
-    const {error} = await presentPaymentSheet();
-    if(error){
-        Alert.alert(error.message);
-        return false;
-    }
-    return true;
-}
+// Web-compatible payment processing
+export const initiateWebPayment = async (amount: number) => {
+  try {
+    const params = await fetchPaymentSheetParams(amount);
+    return params;
+  } catch (error) {
+    throw new Error('Failed to initiate payment');
+  }
+};
+
+export default {
+  processPayment,
+  initiateWebPayment,
+  fetchPaymentSheetParams,
+};

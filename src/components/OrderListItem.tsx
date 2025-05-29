@@ -1,48 +1,32 @@
-import { StyleSheet, Text, Pressable, View } from "react-native";
-import { Link, useSegments } from "expo-router";
+import { Order } from "@/types/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Tables } from "@/database.types";
+import Link from "next/link";
+
 type OrderListItemProps = {
-  order: Tables<"orders">;
+  order: Order;
+  baseUrl?: string;
 };
 
-const OrderListItem = ({ order }: OrderListItemProps) => {
-  const segments = useSegments();
+const OrderListItem = ({ order, baseUrl = "/orders" }: OrderListItemProps) => {
   dayjs.extend(relativeTime);
   const timeSinceCreated = dayjs(order.created_at).fromNow();
+
   return (
-    <Link href={`/${segments[0]}/orders/${order.id}`} asChild>
-      <Pressable style={styles.container}>
-        <View>
-          <Text style={styles.title}>Order #{order.id}</Text>
-          <Text style={styles.time}>{timeSinceCreated}</Text>
-        </View>
-        <Text style={styles.status}>{order.status}</Text>
-      </Pressable>
+    <Link href={`${baseUrl}/${order.id}`} className="block">
+      <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow border border-gray-200">
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="font-bold text-gray-900 mb-1">Order #{order.id}</h3>
+            <p className="text-gray-500 text-sm">{timeSinceCreated}</p>
+          </div>
+          <span className="font-medium text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-800">
+            {order.status}
+          </span>
+        </div>
+      </div>
     </Link>
   );
 };
 
 export default OrderListItem;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    padding: 10,
-    borderRadius: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  title: {
-    fontWeight: "bold",
-    marginVertical: 5,
-  },
-  time: {
-    color: "gray",
-  },
-  status: {
-    fontWeight: "500",
-  },
-});
