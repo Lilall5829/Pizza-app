@@ -1,8 +1,8 @@
 "use client";
 
+import { useAuth } from "@/providers";
 import { Menu, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "./providers";
 
 export function Header() {
   const { session, isAdmin } = useAuth();
