@@ -90,7 +90,7 @@ const nextConfig = {
   },
   // Performance optimizations
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Disabled due to critters module issues
   },
   // Compress responses
   compress: true,

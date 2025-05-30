@@ -27,7 +27,7 @@ interface Order {
 }
 
 // Get all orders
-async function getAllOrders(): Promise<Order[]> {
+async function getAllOrders(): Promise<any[]> {
   const { data, error } = await supabase
     .from("orders")
     .select(

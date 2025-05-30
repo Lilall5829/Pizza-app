@@ -84,9 +84,11 @@ export default function UsersManagePage() {
     users?.filter((user) => {
       const matchesSearch =
         !searchTerm ||
-        user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.id.toLowerCase().includes(searchTerm.toLowerCase());
+        (user.full_name &&
+          user.full_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.username &&
+          user.username.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.id && user.id.toLowerCase().includes(searchTerm.toLowerCase()));
 
       const matchesRole = roleFilter === "ALL" || user.group === roleFilter;
 
@@ -335,7 +337,7 @@ export default function UsersManagePage() {
                           </div>
                           <p className="text-xs text-gray-400 mt-1">
                             Joined:{" "}
-                            {new Date(user.created_at).toLocaleDateString()}
+                            {new Date(user.updated_at).toLocaleDateString()}
                           </p>
                         </div>
                       </div>

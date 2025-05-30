@@ -19,8 +19,10 @@ interface BackgroundFile {
   created_at: string;
   updated_at: string;
   metadata?: {
-    size: number;
+    size?: number;
+    [key: string]: any;
   };
+  [key: string]: any;
 }
 
 export default function BackgroundManagePage() {

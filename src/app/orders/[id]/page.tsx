@@ -300,7 +300,7 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
               {order.order_items && order.order_items.length > 0 ? (
                 <div className="space-y-4">
                   {order.order_items.map((item) => (
-                    <OrderItemListItem key={item.id} item={item} />
+                    <OrderItemListItem key={item.id} item={item as any} />
                   ))}
                 </div>
               ) : (

@@ -279,11 +279,16 @@ export default function UserDetailPage() {
                         Member Since
                       </label>
                       <p className="mt-1 text-gray-900">
-                        {new Date(user.created_at).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
+                        {user.updated_at
+                          ? new Date(user.updated_at).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              }
+                            )
+                          : "Unknown"}
                       </p>
                     </div>
                   </div>
@@ -303,7 +308,7 @@ export default function UserDetailPage() {
                                 day: "numeric",
                               }
                             )
-                          : "Never"}
+                          : "Unknown"}
                       </p>
                     </div>
                   </div>

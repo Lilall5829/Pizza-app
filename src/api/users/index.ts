@@ -14,7 +14,6 @@ export const useUserList = () => {
           full_name,
           username,
           group,
-          created_at,
           updated_at,
           phone,
           default_address,
@@ -23,7 +22,7 @@ export const useUserList = () => {
           default_postal_code,
           default_country
         `)
-        .order("created_at", { ascending: false });
+        .order("updated_at", { ascending: false });
 
       if (error) {
         throw new Error(error.message);
