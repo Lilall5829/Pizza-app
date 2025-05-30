@@ -28,6 +28,13 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      // Unsplash for background images
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
       // Other image sources
       {
         protocol: "https",
@@ -35,13 +42,17 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
-      // Local development
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "",
-        pathname: "/**",
-      },
+      // Local development only
+      ...(process.env.NODE_ENV === "development"
+        ? [
+            {
+              protocol: "http",
+              hostname: "localhost",
+              port: "",
+              pathname: "/**",
+            },
+          ]
+        : []),
     ],
   },
   env: {
@@ -49,7 +60,42 @@ const nextConfig = {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_USE_REAL_STRIPE: process.env.NEXT_PUBLIC_USE_REAL_STRIPE,
   },
+  // Security headers for production
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+        ],
+      },
+    ];
+  },
+  // Performance optimizations
+  experimental: {
+    optimizeCss: true,
+  },
+  // Compress responses
+  compress: true,
+  // Power optimization for Vercel
+  poweredByHeader: false,
 };
 
 module.exports = nextConfig;
