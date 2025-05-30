@@ -1,7 +1,5 @@
-import React from "react";
-import { OrderItem, Product } from "../types";
-import { defaultPizzaImage } from "./ProductListItem";
-import RemoteImage from "./RemoteImage";
+import { OrderItem, Product } from "@/types";
+import ProductImage from "./ProductImage";
 
 type OrderItemListItemProps = {
   item: OrderItem & { products: Product };
@@ -11,9 +9,8 @@ const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
   return (
     <div className="bg-white rounded-lg p-4 flex items-center gap-4 shadow-sm">
       <div className="w-16 h-16 relative flex-shrink-0">
-        <RemoteImage
-          path={item.products.image}
-          fallback={defaultPizzaImage}
+        <ProductImage
+          src={item.products.image}
           alt={item.products.name}
           fill
           className="object-contain"

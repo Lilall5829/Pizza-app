@@ -58,6 +58,14 @@ export type Database = {
           status: string
           total: number
           user_id: string | null
+          delivery_address: string | null
+          delivery_city: string | null
+          delivery_postal_code: string | null
+          delivery_province: string | null
+          delivery_country: string | null
+          delivery_phone: string | null
+          delivery_instructions: string | null
+          customer_name: string | null
         }
         Insert: {
           created_at?: string
@@ -65,6 +73,14 @@ export type Database = {
           status?: string
           total?: number
           user_id?: string | null
+          delivery_address?: string | null
+          delivery_city?: string | null
+          delivery_postal_code?: string | null
+          delivery_province?: string | null
+          delivery_country?: string | null
+          delivery_phone?: string | null
+          delivery_instructions?: string | null
+          customer_name?: string | null
         }
         Update: {
           created_at?: string
@@ -72,6 +88,14 @@ export type Database = {
           status?: string
           total?: number
           user_id?: string | null
+          delivery_address?: string | null
+          delivery_city?: string | null
+          delivery_postal_code?: string | null
+          delivery_province?: string | null
+          delivery_country?: string | null
+          delivery_phone?: string | null
+          delivery_instructions?: string | null
+          customer_name?: string | null
         }
         Relationships: [
           {
@@ -116,6 +140,13 @@ export type Database = {
           updated_at: string | null
           username: string | null
           website: string | null
+          stripe_customer_id: string | null
+          phone: string | null
+          default_address: string | null
+          default_city: string | null
+          default_postal_code: string | null
+          default_province: string | null
+          default_country: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -125,6 +156,13 @@ export type Database = {
           updated_at?: string | null
           username?: string | null
           website?: string | null
+          stripe_customer_id?: string | null
+          phone?: string | null
+          default_address?: string | null
+          default_city?: string | null
+          default_postal_code?: string | null
+          default_province?: string | null
+          default_country?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -134,6 +172,13 @@ export type Database = {
           updated_at?: string | null
           username?: string | null
           website?: string | null
+          stripe_customer_id?: string | null
+          phone?: string | null
+          default_address?: string | null
+          default_city?: string | null
+          default_postal_code?: string | null
+          default_province?: string | null
+          default_country?: string | null
         }
         Relationships: [
           {

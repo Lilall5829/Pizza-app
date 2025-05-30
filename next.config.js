@@ -1,13 +1,46 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["supabase.co", "localhost"],
     remotePatterns: [
+      // Supabase images
       {
         protocol: "https",
         hostname: "*.supabase.co",
         port: "",
         pathname: "/storage/**",
+      },
+      {
+        protocol: "https",
+        hostname: "qvaydsqqgpufbzjudzod.supabase.co",
+        port: "",
+        pathname: "/**",
+      },
+      // AWS S3 images
+      {
+        protocol: "https",
+        hostname: "*.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "notjustdev-dummy.s3.us-east-2.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+      // Other image sources
+      {
+        protocol: "https",
+        hostname: "p16-flow-sign-va.ciciai.com",
+        port: "",
+        pathname: "/**",
+      },
+      // Local development
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "",
+        pathname: "/**",
       },
     ],
   },

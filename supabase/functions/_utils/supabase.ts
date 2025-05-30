@@ -1,6 +1,6 @@
-import { createClient } from 'npm:@supabase/supabase-js@2'
+import { createClient } from 'npm:@supabase/supabase-js@2';
 
-import {stripe} from "./stripe.ts";
+import { stripe } from "./stripe.ts";
 export const createOrRetrieveProfile = async (req: Request) => {
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -37,6 +37,6 @@ export const createOrRetrieveProfile = async (req: Request) => {
     });
     console.log(`New customer "${customer.id}" created for user "${profile.id}"`);
 
-    await supabaseClient.from('profiles').update({stripe_custom:customer.id}).eq('id', profile.id);
+    await supabaseClient.from('profiles').update({stripe_customer_id:customer.id}).eq('id', profile.id);
     return customer.id;    
 };

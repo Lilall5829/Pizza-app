@@ -39,7 +39,7 @@
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.0.4",
     "jest": "^29.7.0",
-    "supabase": "^1.151.1",
+    "supabase": "^1.226.4",
     "typescript": "^5.3.3"
   },
   "private": true

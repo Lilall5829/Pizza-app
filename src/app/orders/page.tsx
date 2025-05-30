@@ -1,27 +1,11 @@
 "use client";
 
+import { useMyOrderList } from "@/api/orders";
 import { Header } from "@/components/Header";
 import OrderListItem from "@/components/OrderListItem";
 import { useAuth } from "@/components/providers";
-import { supabase } from "@/lib/supabase";
-import { Order } from "@/types/database";
-import { useQuery } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
-
-async function getUserOrders(userId: string): Promise<Order[]> {
-  const { data, error } = await supabase
-    .from("orders")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    throw error;
-  }
-
-  return data || [];
-}
 
 export default function OrdersPage() {
   const { session, loading } = useAuth();
@@ -32,15 +16,7 @@ export default function OrdersPage() {
     }
   }, [session, loading]);
 
-  const {
-    data: orders,
-    isLoading: ordersLoading,
-    error,
-  } = useQuery({
-    queryKey: ["orders", session?.user?.id],
-    queryFn: () => getUserOrders(session!.user.id),
-    enabled: !!session?.user?.id,
-  });
+  const { data: orders, isLoading: ordersLoading, error } = useMyOrderList();
 
   if (loading || ordersLoading) {
     return (

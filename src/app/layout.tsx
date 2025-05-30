@@ -1,3 +1,4 @@
+import { PaymentConfigChecker } from "@/components/PaymentConfig";
 import { Providers } from "@/components/providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -22,6 +23,7 @@ export default function RootLayout({
         <Providers>
           <div className="min-h-screen bg-gray-50">{children}</div>
           <Toaster position="top-center" />
+          <PaymentConfigChecker />
         </Providers>
       </body>
     </html>

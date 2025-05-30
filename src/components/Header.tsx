@@ -1,11 +1,16 @@
 "use client";
 
-import { useAuth } from "@/providers";
+import { useAuth } from "@/providers/AuthProvider";
+import { useCart } from "@/providers/CartProvider";
 import { Menu, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 
 export function Header() {
   const { session, isAdmin } = useAuth();
+  const { items } = useCart();
+
+  // Calculate total items in cart
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <header className="bg-white shadow-sm border-b">
@@ -52,36 +57,43 @@ export function Header() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
-            <button className="p-2 text-gray-400 hover:text-gray-600">
+            {/* Search */}
+            <button className="p-2 text-gray-700 hover:text-primary-600 transition-colors">
               <Search className="w-5 h-5" />
             </button>
 
+            {/* Cart */}
             <Link
               href="/cart"
-              className="p-2 text-gray-400 hover:text-gray-600 relative"
+              className="p-2 text-gray-700 hover:text-primary-600 transition-colors relative"
             >
               <ShoppingCart className="w-5 h-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
             </Link>
 
+            {/* User Menu */}
             {session ? (
               <Link
                 href="/profile"
-                className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors"
+                className="p-2 text-gray-700 hover:text-primary-600 transition-colors"
               >
                 <User className="w-5 h-5" />
-                <span className="hidden sm:block">Profile</span>
               </Link>
             ) : (
               <Link
                 href="/sign-in"
-                className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors"
+                className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors"
               >
                 Sign In
               </Link>
             )}
 
-            {/* Mobile Menu Button */}
-            <button className="md:hidden p-2 text-gray-400 hover:text-gray-600">
+            {/* Mobile menu button */}
+            <button className="md:hidden p-2 text-gray-700 hover:text-primary-600 transition-colors">
               <Menu className="w-5 h-5" />
             </button>
           </div>

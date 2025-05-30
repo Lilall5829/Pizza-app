@@ -5,24 +5,47 @@ import { useInsertOrder } from "@/api/orders";
 import { processPayment } from "@/lib/stripe";
 import { CartItem, Tables } from "@/types";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 
 type Product = Tables<"products">;
+
 type CartType = {
   items: CartItem[];
-  addItem: (product: Product, size: CartItem["size"]) => void;
+  addItem: (
+    product: Product,
+    size: CartItem["size"],
+    quantity?: number
+  ) => void;
   updateQuantity: (itemId: string, amount: -1 | 1) => void;
   total: number;
-  checkout: () => void;
+  checkout: (deliveryInfo?: DeliveryInfo) => Promise<void>;
 };
 
-export const CartContext = createContext<CartType>({
+// 配送信息类型
+interface DeliveryInfo {
+  customerName: string;
+  phone: string;
+  address: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+  instructions?: string;
+}
+
+const CartContext = createContext<CartType>({
   items: [],
   addItem: () => {},
   updateQuantity: () => {},
   total: 0,
-  checkout: () => {},
+  checkout: async () => {},
 });
 
 // Generate a simple UUID for cart items
@@ -32,35 +55,88 @@ function generateId(): string {
   );
 }
 
+// Load cart from localStorage
+function loadCartFromStorage(): CartItem[] {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const stored = localStorage.getItem("food-ordering-cart");
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error("Failed to load cart from storage:", error);
+    return [];
+  }
+}
+
+// Save cart to localStorage
+function saveCartToStorage(items: CartItem[]) {
+  if (typeof window === "undefined") return;
+
+  try {
+    localStorage.setItem("food-ordering-cart", JSON.stringify(items));
+  } catch (error) {
+    console.error("Failed to save cart to storage:", error);
+  }
+}
+
 const CartProvider = ({ children }: PropsWithChildren) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const router = useRouter();
 
   const { mutate: insertOrder } = useInsertOrder();
   const { mutate: insertOrderItems } = useInsertOrderItems();
 
-  const router = useRouter();
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    const savedItems = loadCartFromStorage();
+    setItems(savedItems);
+    setIsLoaded(true);
+  }, []);
 
-  const addItem = (product: Product, size: CartItem["size"]) => {
-    // if already in cart, increment quantity rather than duplicate it!
+  // Save to localStorage whenever items change (but only after initial load)
+  useEffect(() => {
+    if (isLoaded) {
+      saveCartToStorage(items);
+    }
+  }, [items, isLoaded]);
+
+  const addItem = (
+    product: Product,
+    size: CartItem["size"],
+    quantity: number = 1
+  ) => {
+    // Check if item already exists in cart
     const existingItem = items.find(
-      (item) => item.product == product && item.size == size
+      (item) => item.product.id === product.id && item.size === size
     );
 
     if (existingItem) {
-      updateQuantity(existingItem.id, 1);
-      return;
+      // If item exists, update its quantity
+      setItems(
+        items.map((item) =>
+          item.id === existingItem.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        )
+      );
+    } else {
+      // If item doesn't exist, create new cart item
+      const newCartItem: CartItem = {
+        id: generateId(),
+        product,
+        product_id: product.id,
+        size,
+        quantity,
+      };
+      setItems([newCartItem, ...items]);
     }
 
-    const newCartItem: CartItem = {
-      id: generateId(),
-      product,
-      product_id: product.id,
-      size,
-      quantity: 1,
-    };
-
-    setItems([newCartItem, ...items]);
-    toast.success(`${product.name} added to cart`);
+    if (quantity === 1) {
+      toast.success(`${product.name} added to cart`);
+    } else {
+      toast.success(`${quantity} ${product.name} added to cart`);
+    }
   };
 
   // updateQuantity
@@ -89,7 +165,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     setItems([]);
   };
 
-  const checkout = async () => {
+  const checkout = async (deliveryInfo?: DeliveryInfo) => {
     if (items.length === 0) {
       toast.error("Your cart is empty");
       return;
@@ -107,18 +183,31 @@ const CartProvider = ({ children }: PropsWithChildren) => {
         return;
       }
 
-      // If payment successful, create order
-      insertOrder(
-        { total },
-        {
-          onSuccess: saveOrderItems,
-          onError: (error) => {
-            toast.dismiss();
-            toast.error("Failed to create order");
-            console.error("Order creation failed:", error);
-          },
-        }
-      );
+      // If payment successful, create order with delivery info
+      const orderData: any = {
+        total,
+      };
+
+      // Add delivery information if provided
+      if (deliveryInfo) {
+        orderData.customer_name = deliveryInfo.customerName;
+        orderData.delivery_phone = deliveryInfo.phone;
+        orderData.delivery_address = deliveryInfo.address;
+        orderData.delivery_city = deliveryInfo.city;
+        orderData.delivery_province = deliveryInfo.province;
+        orderData.delivery_postal_code = deliveryInfo.postalCode;
+        orderData.delivery_country = deliveryInfo.country;
+        orderData.delivery_instructions = deliveryInfo.instructions || null;
+      }
+
+      insertOrder(orderData, {
+        onSuccess: saveOrderItems,
+        onError: (error) => {
+          toast.dismiss();
+          toast.error("Failed to create order");
+          console.error("Order creation failed:", error);
+        },
+      });
     } catch (error) {
       toast.dismiss();
       toast.error("Payment processing failed");
