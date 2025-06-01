@@ -8,8 +8,19 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Food Ordering - Delicious Meals Delivered",
-  description: "Order your favorite meals online with fast delivery",
+  title: "Pizzilla - Premium Pizza Delivered Fast",
+  description:
+    "Order authentic pizzas and Italian cuisine online with fast delivery",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

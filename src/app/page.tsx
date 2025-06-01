@@ -68,10 +68,10 @@ export default function HomePage() {
       <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Delicious Food, Delivered Fast
+            Authentic Italian Pizza, Delivered Hot
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-primary-100">
-            Fresh ingredients, amazing flavors, right to your door
+            Fresh ingredients, traditional recipes, right to your door
           </p>
           <Link
             href="/menu"
@@ -86,9 +86,9 @@ export default function HomePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Featured Items
+            Featured Pizzas
           </h2>
-          <p className="text-xl text-gray-600">Try our most popular dishes</p>
+          <p className="text-xl text-gray-600">Try our most popular recipes</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -146,7 +146,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
               <p className="text-gray-600">
-                Get your food delivered in 30 minutes or less
+                Get your pizza delivered in 30 minutes or less
               </p>
             </div>
 

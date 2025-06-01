@@ -42,6 +42,11 @@ export default function AdminPage() {
           Admin Dashboard
         </h1>
 
+        <p className="text-gray-600 mb-8">
+          Comprehensive dashboard to manage different aspects of the Pizzilla
+          restaurant system.
+        </p>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Link href="/admin/menu" className="block">
             <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow">

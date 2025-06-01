@@ -75,9 +75,9 @@ export default function AuthLayout({
       {/* 内容 */}
       <div className="relative z-10">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white drop-shadow-lg">
-            🍔 Food Ordering
-          </h2>
+          <h1 className="text-4xl font-bold text-white mb-4 text-center">
+            🍕 Pizzilla
+          </h1>
           <p className="mt-2 text-center text-sm text-white text-opacity-90 drop-shadow">
             Welcome back! Please sign in to your account
           </p>

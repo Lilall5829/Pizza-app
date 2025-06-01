@@ -58,7 +58,7 @@ export default function CartPage() {
               Your cart is empty
             </h2>
             <p className="text-gray-600 mb-8">
-              Add some delicious items to your cart to get started!
+              Add some delicious pizzas to your cart to get started!
             </p>
             <Link
               href="/menu"
