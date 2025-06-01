@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { PaymentConfigChecker } from "@/components/PaymentConfig";
 import { Providers } from "@/components/providers";
 import type { Metadata } from "next";
@@ -32,7 +33,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="min-h-screen bg-gray-50">{children}</div>
+          <div className="min-h-screen bg-gray-50 flex flex-col">
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
           <Toaster position="top-center" />
           <PaymentConfigChecker />
         </Providers>
