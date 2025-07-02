@@ -211,7 +211,7 @@ export default function CreateProductPage() {
                   <ul className="list-disc list-inside space-y-1">
                     <li>Product name should be descriptive and unique</li>
                     <li>
-                      Price should be in USD and include cents (e.g., 12.99)
+                      Price should be in CAD and include cents (e.g., 12.99)
                     </li>
                     <li>
                       Images can be uploaded later via the Image Management page
