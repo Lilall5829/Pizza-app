@@ -2,7 +2,7 @@
 
 - **Introduction**
 
-Pizzilla is a full-featured online pizza ordering platform designed for seamless customer experience and efficient restaurant management. The system supports user registration (including Google OAuth2), real-time menu browsing, online ordering, secure online payment, order tracking, and admin management—all presented with a clean and modern UI built on Next.js.
+Pizzilla is a full-featured online pizza ordering platform designed for seamless customer experience and efficient restaurant management. The system supports user registration, real-time menu browsing, online ordering, secure online payment, order tracking, and admin management—all presented with a clean and modern UI built on Next.js.
 
 - **Project Motivation**
 
