@@ -1,0 +1,12 @@
+[1mdiff --git a/src/api/orders/index.ts b/src/api/orders/index.ts[m
+[1mindex 7506245..a050504 100644[m
+[1m--- a/src/api/orders/index.ts[m
+[1m+++ b/src/api/orders/index.ts[m
+[36m@@ -33,6 +33,7 @@[m [mexport const useMyOrderList = () => {[m
+               }[m
+               return data;[m
+             },[m
+[32m+[m[32m            enabled: !!id, // Only run query when user ID is available[m
+   });[m
+ }[m
+ [m
