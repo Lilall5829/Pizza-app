@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/providers/AuthProvider";
 import { InsertTables, UpdateTables } from "@/types";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export const useAdminOrderList = ({archived=false}) => {
     const statuses = archived ? ['Delivered'] : ['New', 'Cooking','Delivering'];
     return useQuery({
@@ -33,6 +33,7 @@ export const useMyOrderList = () => {
               }
               return data;
             },
+            enabled: !!id, // Only run query when user ID is available
   });
 }
 
